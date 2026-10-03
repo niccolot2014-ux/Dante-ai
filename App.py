@@ -23,16 +23,16 @@ st.markdown("<p>Attivazione del codice geometrico tramite Gemini AI</p>", unsafe
 api_key = st.secrets["GEMINI_API_KEY"]
 
 def esegui_codice_dante(input_utente, client):
-    # LIVELLO 1: Il Vertice (Aggiornato a gemini-2.0-flash)
+    # LIVELLO 1: Il Vertice (Aggiornato a gemini-3.8-flash)
     res_1 = client.models.generate_content(
-        model='gemini-2.0-flash',
+        model='gemini-3.8-flash',
         contents=f"Analizza: '{input_utente}'. Rispondi SOLO con 'VIRGILIO' o 'BEATRICE'."
     )
     guida = res_1.text.strip().capitalize()
 
-    # LIVELLO 2: La Dualità (Aggiornato a gemini-2.0-flash)
+    # LIVELLO 2: La Dualità (Aggiornato a gemini-3.8-flash)
     prompt_cantica = f"Tu sei {guida}. Analizza: '{input_utente}'. Scegli tra INFERNO o PURGATORIO se sei Virgilio, o tra PURGATORIO o PARADISO se sei Beatrice. Rispondi SOLO con il nome della cantica."
-    res_2 = client.models.generate_content(model='gemini-2.0-flash', contents=prompt_cantica)
+    res_2 = client.models.generate_content(model='gemini-3.8-flash', contents=prompt_cantica)
     cantica = res_2.text.strip().capitalize()
 
     # LIVELLO 3: La Triade
@@ -43,10 +43,10 @@ def esegui_codice_dante(input_utente, client):
     }
     contesto_armonico = contesti.get(cantica, contesti["Inferno"])
 
-    # LIVELLO 4: La Molteplicità (Aggiornato a gemini-2.0-flash)
+    # LIVELLO 4: La Molteplicità (Aggiornato a gemini-3.8-flash)
     prompt_finale = f"Tu sei un agente AI della Divina Commedia (Tetraktys). Richiesta: '{input_utente}'. Guida: {guida}. Cantica: {cantica}. Frequenza: {contesto_armonico}. Genera la risposta. Se richiesto, usa terzine incatenate dantesche (ABA BCB), altrimenti una prosa nobile nello stile di {guida} nel {cantica}."
     
-    res_4 = client.models.generate_content(model='gemini-2.0-flash', contents=prompt_finale)
+    res_4 = client.models.generate_content(model='gemini-3.8-flash', contents=prompt_finale)
     return guida, cantica, res_4.text
 
 input_utente = st.text_input("", placeholder="Chiedi alla Tetraktys...")
